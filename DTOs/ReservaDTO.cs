@@ -10,9 +10,11 @@ namespace reservasAPI.DTOs
 
         public int? IdMesa { get; set; }
 
-        public DateOnly FechaReserva { get; set; }
+        public int? UserId { get; set; }
 
-        public TimeOnly HoraReserva { get; set; }
+        public DateTime FechaReserva { get; set; }
+
+        public TimeSpan HoraReserva { get; set; }
 
         public int? NumPersonas { get; set; }
 
@@ -21,18 +23,22 @@ namespace reservasAPI.DTOs
         public ClienteResponse IdClienteNavigation { get; set; }
 
         public virtual MesaResponse IdMesaNavigation { get; set; }
+
+        public virtual UserResponse UserIdNavigation { get; set; }
     }
-    public class ReservaResquet
+    public class ReservaRequest
     {
-        public int IdReserva { get; set; }
+        //public int IdReserva { get; set; }
 
         public int? IdCliente { get; set; }
 
         public int? IdMesa { get; set; }
 
-        public DateOnly FechaReserva { get; set; }
+        public int? UserId { get; set; }
 
-        public TimeOnly HoraReserva { get; set; }
+        public DateTime FechaReserva { get; set; }
+
+        public TimeSpan HoraReserva { get; set; }
 
         public int? NumPersonas { get; set; }
 
