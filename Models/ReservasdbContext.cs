@@ -21,9 +21,7 @@ public partial class ReservasdbContext : DbContext
 
     public virtual DbSet<Reserva> Reservas { get; set; }
 
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-//        => optionsBuilder.UseSqlServer("Server=LAPTOP-JHORLENY\\SQLEXPRESS; Database=reservasdb; User Id=Jhorleny; Password=2005; Encrypt=False; TrustServerCertificate=false;");
+    public virtual DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -46,6 +44,12 @@ public partial class ReservasdbContext : DbContext
             entity.Property(e => e.Telefono)
                 .HasMaxLength(20)
                 .HasColumnName("telefono");
+            entity.Property(e => e.UserId).HasColumnName("UserId");
+
+            entity.HasOne(d => d.User)
+                .WithMany(p => p.Clientes)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK_cliente_Users");
         });
 
         modelBuilder.Entity<Mesa>(entity =>
@@ -63,6 +67,12 @@ public partial class ReservasdbContext : DbContext
             entity.Property(e => e.Ubicacion)
                 .HasMaxLength(50)
                 .HasColumnName("ubicacion");
+            entity.Property(e => e.UserId).HasColumnName("UserId");
+
+            entity.HasOne(d => d.User)
+                .WithMany(p => p.Mesas)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK_mesas_Users");
         });
 
         modelBuilder.Entity<Reserva>(entity =>
@@ -81,6 +91,7 @@ public partial class ReservasdbContext : DbContext
             entity.Property(e => e.IdCliente).HasColumnName("id_cliente");
             entity.Property(e => e.IdMesa).HasColumnName("id_mesa");
             entity.Property(e => e.NumPersonas).HasColumnName("num_personas");
+            entity.Property(e => e.UserId).HasColumnName("UserId");
 
             entity.HasOne(d => d.IdClienteNavigation).WithMany(p => p.Reservas)
                 .HasForeignKey(d => d.IdCliente)
@@ -89,6 +100,29 @@ public partial class ReservasdbContext : DbContext
             entity.HasOne(d => d.IdMesaNavigation).WithMany(p => p.Reservas)
                 .HasForeignKey(d => d.IdMesa)
                 .HasConstraintName("FK__reserva__id_mesa__412EB0B6");
+
+            entity.HasOne(d => d.User)
+                .WithMany(p => p.Reservas)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK_reserva_Users");
+        });
+
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasKey(e => e.UserId).HasName("PK_Users");
+
+            entity.ToTable("Users");
+
+            entity.Property(e => e.UserId).HasColumnName("UserId");
+            entity.Property(e => e.Username)
+                .HasMaxLength(50)
+                .IsRequired();
+            entity.Property(e => e.UserPassword)
+                .HasMaxLength(255)
+                .IsRequired();
+            entity.Property(e => e.UserRole)
+                .HasMaxLength(100)
+                .IsRequired();
         });
 
         OnModelCreatingPartial(modelBuilder);

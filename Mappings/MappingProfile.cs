@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using reservasAPI.DTOs;
 using reservasAPI.Models;
+using reservasAPI.DTOs;
+using reservasAPI.Models;
 
 namespace reservasAPI.Mappings
 {
@@ -12,11 +14,14 @@ namespace reservasAPI.Mappings
             CreateMap<Cliente, ClienteResponse>();
             CreateMap<Mesa, MesaResponse>();
             CreateMap<Reserva, ReservaResponse>();
+            CreateMap<User, UserResponse>();
+            
 
             //DTO -> Modelo 
             CreateMap<ClienteResquet, Cliente>();
             CreateMap<MesaResquet, Mesa>();
-            CreateMap<ReservaResquet, Reserva>();
+            CreateMap<ReservaRequest, Reserva>();
+            CreateMap<UserRequest, User>();
 
         }
     }
