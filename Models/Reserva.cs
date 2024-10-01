@@ -11,15 +11,21 @@ public partial class Reserva
 
     public int? IdMesa { get; set; }
 
-    public DateOnly FechaReserva { get; set; }
+    public int? UserId { get; set; }
 
-    public TimeOnly HoraReserva { get; set; }
+    public DateTime FechaReserva { get; set; }
+
+    public TimeSpan HoraReserva { get; set; }
 
     public int? NumPersonas { get; set; }
 
     public string? Estado { get; set; }
 
+    public virtual User? User { get; set; }
+
     public virtual Cliente? IdClienteNavigation { get; set; }
 
     public virtual Mesa? IdMesaNavigation { get; set; }
+
+        
 }
