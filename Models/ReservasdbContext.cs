@@ -93,11 +93,13 @@ public partial class ReservasdbContext : DbContext
             entity.Property(e => e.NumPersonas).HasColumnName("num_personas");
             entity.Property(e => e.UserId).HasColumnName("UserId");
 
-            entity.HasOne(d => d.IdClienteNavigation).WithMany(p => p.Reservas)
+            entity.HasOne(d => d.IdClienteNavigation)
+                .WithMany(p => p.Reservas)
                 .HasForeignKey(d => d.IdCliente)
                 .HasConstraintName("FK__reserva__id_clie__403A8C7D");
 
-            entity.HasOne(d => d.IdMesaNavigation).WithMany(p => p.Reservas)
+            entity.HasOne(d => d.IdMesaNavigation)
+                .WithMany(p => p.Reservas)
                 .HasForeignKey(d => d.IdMesa)
                 .HasConstraintName("FK__reserva__id_mesa__412EB0B6");
 

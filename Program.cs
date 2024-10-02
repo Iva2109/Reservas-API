@@ -11,6 +11,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Options;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using reservasAPI.Services.Mesas.reservasAPI.Services.Mesa;
+using reservasAPI.Services.Mesa;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,6 +55,7 @@ builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 builder.Services.AddScoped<IReservaServices, ReservaServices>();
 builder.Services.AddScoped<IUserServices, UserServices>();
+builder.Services.AddScoped<IMesaServices, MesaServices>();
 
 var jwtSettings = builder.Configuration.GetSection("JwtSetting");
 var secretkey = jwtSettings.GetValue<string>("SecretKey");
