@@ -15,9 +15,7 @@ public partial class Mesa
 
     public string? Estado { get; set; }
 
-    public virtual User? User { get; set; }
-
-    public virtual User? UserIdNavigation { get; set; }
+    public virtual User? User { get; set; } // Relación con User
 
     public virtual ICollection<Reserva> Reservas { get; set; } = new List<Reserva>();
 }

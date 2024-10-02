@@ -5,6 +5,7 @@
         public static void  UseEndpoints(this WebApplication app) {
             ReservaEdpoints.Add(app);
             UserEndpoints.Add(app);
+            MesaEndpoints.Add(app);
         }
     }
 }
