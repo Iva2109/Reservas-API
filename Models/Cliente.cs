@@ -21,8 +21,6 @@ public partial class Cliente
     // Propiedad de navegación para la relación con User
     public virtual User? User { get; set; }
 
-    public virtual User? UserIdNavigation { get; set; }
-
     // Propiedad de navegación para las reservas del cliente
     public virtual ICollection<Reserva> Reservas { get; set; } = new List<Reserva>();
 }

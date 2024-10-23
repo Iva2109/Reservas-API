@@ -12,12 +12,12 @@
 
         public string? Telefono { get; set; }
 
-        public DateOnly? FechaRegistro { get; set; }
+        public DateTime FechaRegistro { get; set; }
 
         public virtual UserResponse UserIdNavigation { get; set; }
     }
 
-    public class ClienteResquet
+    public class ClienteRequest
     {
         public int IdCliente { get; set; }
 
@@ -29,6 +29,6 @@
 
         public string? Telefono { get; set; }
 
-        public DateOnly? FechaRegistro { get; set; }
+        public DateTime FechaRegistro { get; set; }
     }
 }

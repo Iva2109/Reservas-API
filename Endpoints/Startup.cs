@@ -6,6 +6,8 @@
             ReservaEdpoints.Add(app);
             UserEndpoints.Add(app);
             MesaEndpoints.Add(app);
+            ClienteEndpoints.Add(app);  
+            
         }
     }
 }
