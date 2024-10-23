@@ -13,6 +13,7 @@ using System.Text;
 using Microsoft.OpenApi.Models;
 using reservasAPI.Services.Mesas.reservasAPI.Services.Mesa;
 using reservasAPI.Services.Mesa;
+using reservasAPI.Services.Cliente;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,6 +57,7 @@ builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddScoped<IReservaServices, ReservaServices>();
 builder.Services.AddScoped<IUserServices, UserServices>();
 builder.Services.AddScoped<IMesaServices, MesaServices>();
+builder.Services.AddScoped<IClienteService, ClienteService>();
 
 var jwtSettings = builder.Configuration.GetSection("JwtSetting");
 var secretkey = jwtSettings.GetValue<string>("SecretKey");
