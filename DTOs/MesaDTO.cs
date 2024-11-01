@@ -13,7 +13,7 @@
 
         public virtual UserResponse UserIdNavigation { get; set; }
     }
-    public class MesaResquet
+    public class MesaRequest
     {
         public int IdMesa { get; set; }
 

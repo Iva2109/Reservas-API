@@ -19,7 +19,7 @@ namespace reservasAPI.Mappings
 
             //DTO -> Modelo 
             CreateMap<ClienteRequest, Cliente>();
-            CreateMap<MesaResquet, Mesa>();
+            CreateMap<MesaRequest, Mesa>();
             CreateMap<ReservaRequest, Reserva>();
             CreateMap<UserRequest, User>();
 

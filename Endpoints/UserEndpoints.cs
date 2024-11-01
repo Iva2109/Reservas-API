@@ -25,7 +25,7 @@ namespace reservasAPI.Endpoints
                 Summary = "Obtener Usuarios",
                 Description = "Muestra una lista de todos los Usuarioss."
 
-            });
+            }).RequireAuthorization();
 
             group.MapGet("/{id}", async (int id, IUserServices userServices) => {
                 var user = await userServices.GetUser(id);
@@ -38,21 +38,28 @@ namespace reservasAPI.Endpoints
                 Summary = "Obtener Usuario",
                 Description = "Buscar un Usuario por id. "
 
-            });
+            }).RequireAuthorization();
 
             group.MapPost("/", async (UserRequest user, IUserServices userServices) => {
                 if (user == null)
                     return Results.BadRequest(); //400 BadRequest: La solicitud no se pudo procesar, error de formato
-
-                var id = await userServices.PostUser(user);
-                //201 Created: El recurso se creo con exito, se devuelve la ubicacíon del recurso creado
-                return Results.Created($"api/users/{id}", user);
+                try {
+                    var id = await userServices.PostUser(user);
+                    //201 Created: El recurso se creo con exito, se devuelve la ubicacíon del recurso creado
+                    return Results.Created($"api/users/{id}", user);
+                }
+                catch (Exception) 
+                {
+                    //409 Conflict
+                    return Results.Conflict("El nombre de usuario ya esta en uso");
+                }
+                
             }).WithOpenApi(o => new OpenApiOperation(o)
             {
                 Summary = "Crear Usuario",
                 Description = "Crear un nuevo usuario."
 
-            });
+            }).RequireAuthorization();
 
             group.MapPut("/{id}", async (int id, UserRequest user, IUserServices userServices) => {
 
@@ -67,7 +74,7 @@ namespace reservasAPI.Endpoints
                 Summary = "Modificar usuario",
                 Description = "Actualizar un usuario  existente."
 
-            });
+            }).RequireAuthorization();
 
             group.MapDelete("/{id}", async (int id, IUserServices userServices) => {
 
@@ -82,7 +89,7 @@ namespace reservasAPI.Endpoints
                 Summary = "Eliminar usuario",
                 Description = "Eliminar un usuario existente."
 
-            });
+            }).RequireAuthorization();
 
             group.MapPost("/login", async (UserRequest user, IUserServices userServices, IConfiguration config) => {
 

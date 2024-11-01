@@ -41,15 +41,26 @@ namespace reservasAPI.Services.Mesa
             return mesasList;
         }
 
-        public async Task<int> PostMesa(MesaResquet mesa)
+        public async Task<int> PostMesa(MesaRequest mesa)
         {
-            var mesaRequest = _mapper.Map<MesaResquet, reservasAPI.Models.Mesa>(mesa);
+            // Verificar si ya existe una mesa con la misma Capacidad y Ubicacion
+            var mesaDuplicada = await _db.Mesas
+                .FirstOrDefaultAsync(m => m.Capacidad == mesa.Capacidad && m.Ubicacion == mesa.Ubicacion);
+
+            if (mesaDuplicada != null)
+            {
+                // Opcionalmente, puedes lanzar una excepción aquí o devolver un valor especial
+                throw new InvalidOperationException("Ya existe una mesa con la misma capacidad y ubicación.");
+            }
+
+            // Mapear y agregar la nueva mesa si no hay duplicados
+            var mesaRequest = _mapper.Map<MesaRequest, reservasAPI.Models.Mesa>(mesa);
             await _db.Mesas.AddAsync(mesaRequest);
             await _db.SaveChangesAsync();
             return mesaRequest.IdMesa;
         }
 
-        public async Task<int> PutMesa(int mesaId, MesaResquet mesa)
+        public async Task<int> PutMesa(int mesaId, MesaRequest mesa)
         {
             var entity = await _db.Mesas.FindAsync(mesaId);
             if (entity == null)

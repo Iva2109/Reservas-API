@@ -34,20 +34,28 @@ namespace reservasAPI.Endpoints
                 Description = "Busca una mesa por id."
             }).RequireAuthorization();
 
-            group.MapPost("/", async (MesaResquet mesa, IMesaServices mesaServices) =>
+            group.MapPost("/", async (MesaRequest mesa, IMesaServices mesaServices) =>
             {
                 if (mesa == null)
-                    return Results.BadRequest(); // 400 Bad Request: Error en el formato de la solicitud
+                    return Results.BadRequest();
 
-                var id = await mesaServices.PostMesa(mesa);
-                return Results.Created($"api/mesas/{id}", mesa); // 201 Created: Mesa creada con éxito
+                try
+                {
+                    var id = await mesaServices.PostMesa(mesa);
+                    return Results.Created($"api/mesas/{id}", mesa);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    return Results.Conflict(ex.Message); // Devuelve 409 Conflict si la mesa ya existe
+                }
             }).WithOpenApi(o => new OpenApiOperation(o)
             {
                 Summary = "Crear Mesa",
                 Description = "Crear una nueva mesa."
             }).RequireAuthorization();
 
-            group.MapPut("/{id}", async (int id, MesaResquet mesa, IMesaServices mesaServices) =>
+
+            group.MapPut("/{id}", async (int id, MesaRequest mesa, IMesaServices mesaServices) =>
             {
                 var result = await mesaServices.PutMesa(id, mesa);
                 if (result == -1)

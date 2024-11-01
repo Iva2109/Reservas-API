@@ -49,11 +49,23 @@ namespace reservasAPI.Services.Cliente
         // Método para crear un nuevo cliente
         public async Task<int> PostCliente(ClienteRequest cliente)
         {
-            var clienteEntity = _mapper.Map<ClienteRequest, reservasAPI.Models.Cliente>(cliente);
-            await _db.Clientes.AddAsync(clienteEntity);
+            // Verificar si ya existe un cliente con el mismo Email
+            var clienteDuplicado = await _db.Clientes
+                .FirstOrDefaultAsync(c => c.Correo == cliente.Correo);
+
+            if (clienteDuplicado != null)
+            {
+                // Lanza una excepción en caso de duplicado
+                throw new InvalidOperationException("Ya existe un cliente con el mismo email.");
+            }
+
+            // Mapear y agregar el nuevo cliente si no hay duplicados
+            var clienteRequest = _mapper.Map<ClienteRequest, reservasAPI.Models.Cliente>(cliente);
+            await _db.Clientes.AddAsync(clienteRequest);
             await _db.SaveChangesAsync();
-            return clienteEntity.IdCliente; // Devuelve el ID del cliente recién creado
+            return clienteRequest.IdCliente;
         }
+
 
         // Método para actualizar un cliente existente
         public async Task<int> PutCliente(int clienteId, ClienteRequest cliente)
