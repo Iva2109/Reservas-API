@@ -36,18 +36,26 @@ namespace reservasAPI.Endpoints
             }).RequireAuthorization();
 
             // Endpoint para crear un nuevo cliente
-            group.MapPost("/", async (ClienteRequest cliente, IClienteService clienteService) =>
+            group.MapPost("/", async (ClienteRequest cliente, IClienteService clienteServices) =>
             {
                 if (cliente == null)
-                    return Results.BadRequest(); // 400 Bad Request: Error en el formato de la solicitud
+                    return Results.BadRequest();
 
-                var id = await clienteService.PostCliente(cliente);
-                return Results.Created($"api/clientes/{id}", cliente); // 201 Created: Cliente creado con éxito
+                try
+                {
+                    var id = await clienteServices.PostCliente(cliente);
+                    return Results.Created($"api/clientes/{id}", cliente);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    return Results.Conflict(ex.Message); // Devuelve 409 Conflict si el cliente ya existe
+                }
             }).WithOpenApi(o => new OpenApiOperation(o)
             {
                 Summary = "Crear Cliente",
-                Description = "Crea un nuevo cliente."
+                Description = "Crear un nuevo cliente."
             }).RequireAuthorization();
+
 
             // Endpoint para actualizar un cliente existente
             group.MapPut("/{id}", async (int id, ClienteRequest cliente, IClienteService clienteService) =>
